@@ -1,0 +1,280 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redis Shopping Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fdfaf6;
+            padding: 30px;
+            font-family: "Segoe UI", sans-serif;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            background-color: white;
+        }
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .bg-user { border-top: 8px solid #e55330; }
+        .bg-product { border-top: 8px solid #9c27b0; }
+        .bg-cart { border-top: 8px solid #2196f3; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mb-5">🛒 Redis Shopping Cart</h1>
+
+    <div class="section bg-user">
+        <h2>Create User</h2>
+        <input class="form-control mb-2" id="user_id" placeholder="User ID" />
+        <input class="form-control mb-2" id="user_name" placeholder="Name" />
+        <input class="form-control mb-2" id="user_email" placeholder="Email" />
+        <button class="btn btn-primary me-2" onclick="createUser()">Create User</button>
+        <button class="btn btn-secondary" onclick="showUsers()">Show Users</button>
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered table-striped" id="user_table" style="display:none;">
+                <thead><tr><th>User ID</th><th>Name</th><th>Email</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section bg-product">
+        <h2>Create Product</h2>
+        <input class="form-control mb-2" id="sku" placeholder="SKU" />
+        <input class="form-control mb-2" id="pname" placeholder="Name" />
+        <input class="form-control mb-2" id="desc" placeholder="Description" />
+        <input class="form-control mb-2" id="qty" placeholder="Qty" type="number" />
+        <input class="form-control mb-2" id="rating" placeholder="Rating" type="number" />
+        <input class="form-control mb-2" id="price" placeholder="Price" type="number" />
+        <button class="btn btn-primary me-2" onclick="createProduct()">Create Product</button>
+        <button class="btn btn-secondary" onclick="showProducts()">Show Products</button>
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered table-striped" id="product_table" style="display:none;">
+                <thead><tr><th>SKU</th><th>Name</th><th>Description</th><th>Qty</th><th>Rating</th><th>Price</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section bg-cart">
+        <h2>Shopping Cart</h2>
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-outline-primary" onclick="refreshDropdowns()">🔄 Refresh Dropdowns</button>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 mb-2">
+                <select class="form-select" id="cart_user">
+                    <option value="">Select User</option>
+                    {% for u in users %}
+                    <option value="{{ u.user_id }}">{{ u.name }} ({{ u.user_id }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mb-2">
+                <select class="form-select" id="cart_sku">
+                    <option value="">Select Product SKU</option>
+                    {% for p in products %}
+                    <option value="{{ p.sku }}">{{ p.sku }} - {{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <input class="form-control mb-2" id="cart_qty" placeholder="Quantity" type="number" />
+        <div class="mb-3">
+            <button class="btn btn-success me-2" onclick="addToCart()">Add to Cart</button>
+            <button class="btn btn-warning me-2" onclick="removeFromCart()">Remove from Cart</button>
+            <button class="btn btn-danger me-2" onclick="clearCart()">Clear Cart</button>
+            <button class="btn btn-info" onclick="getSummary()">Cart Summary</button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="cart_table" style="display:none;">
+                <thead><tr><th>SKU</th><th>Name</th><th>Quantity</th><th>Price</th><th>Subtotal</th></tr></thead>
+                <tbody></tbody>
+                <tfoot><tr><th colspan="4" class="text-end">Total</th><th id="cart_total">$0.00</th></tr></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+function createUser() {
+    fetch('/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            user_id: document.getElementById('user_id').value,
+            name: document.getElementById('user_name').value,
+            email: document.getElementById('user_email').value
+        })
+    }).then(res => res.json()).then(data => {
+        alert(data.message);
+        refreshDropdowns();
+    });
+}
+
+function createProduct() {
+    fetch('/product', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            sku: document.getElementById('sku').value,
+            name: document.getElementById('pname').value,
+            description: document.getElementById('desc').value,
+            qty: document.getElementById('qty').value,
+            rating: document.getElementById('rating').value,
+            price: document.getElementById('price').value
+        })
+    }).then(res => res.json()).then(data => {
+        alert(data.message);
+        refreshDropdowns();
+    });
+}
+
+function addToCart() {
+    fetch('/cart/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            user_id: document.getElementById('cart_user').value,
+            sku: document.getElementById('cart_sku').value,
+            quantity: document.getElementById('cart_qty').value
+        })
+    }).then(res => res.json()).then(data => {
+        alert(data.message);
+        getSummary();
+    });
+}
+
+function removeFromCart() {
+    fetch('/cart/remove', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            user_id: document.getElementById('cart_user').value,
+            sku: document.getElementById('cart_sku').value,
+	    quantity: document.getElementById('cart_qty').value
+        })
+    }).then(res => res.json()).then(data => {
+        alert(data.message);
+        getSummary();
+    });
+}
+
+function clearCart() {
+    fetch('/cart/clear', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: document.getElementById('cart_user').value })
+    }).then(res => res.json()).then(data => {
+        alert(data.message);
+        getSummary();
+    });
+}
+
+function getSummary() {
+    let userId = document.getElementById('cart_user').value;
+    if (!userId) return alert("Please select a user");
+
+    fetch(`/cart/summary/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+        const tbody = document.querySelector('#cart_table tbody');
+        tbody.innerHTML = '';
+        let total = 0;
+
+        data.items.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.sku}</td>
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.price}</td>
+                <td>$${item.subtotal.toFixed(2)}</td>
+            `;
+            tbody.appendChild(row);
+            total += item.subtotal;
+        });
+
+        document.getElementById('cart_total').innerText = `$${total.toFixed(2)}`;
+        document.getElementById('cart_table').style.display = 'table';
+    });
+}
+
+function refreshDropdowns() {
+    fetch('/api/users')
+        .then(res => res.json())
+        .then(users => {
+            let userSelect = document.getElementById('cart_user');
+            userSelect.innerHTML = '<option value="">Select User</option>';
+            users.forEach(u => {
+                userSelect.innerHTML += `<option value="${u.user_id}">${u.name} (${u.user_id})</option>`;
+            });
+        });
+
+    fetch('/api/products')
+        .then(res => res.json())
+        .then(products => {
+            let productSelect = document.getElementById('cart_sku');
+            productSelect.innerHTML = '<option value="">Select Product SKU</option>';
+            products.forEach(p => {
+                productSelect.innerHTML += `<option value="${p.sku}">${p.sku} - ${p.name}</option>`;
+            });
+        });
+}
+
+function showUsers() {
+    fetch('/api/users')
+        .then(res => res.json())
+        .then(users => {
+            const tbody = document.querySelector('#user_table tbody');
+            tbody.innerHTML = '';
+            users.forEach(u => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${u.user_id}</td>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            document.getElementById('user_table').style.display = 'table';
+        });
+}
+
+function showProducts() {
+    fetch('/api/products')
+        .then(res => res.json())
+        .then(products => {
+            const tbody = document.querySelector('#product_table tbody');
+            tbody.innerHTML = '';
+            products.forEach(p => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${p.sku}</td>
+                    <td>${p.name}</td>
+                    <td>${p.description}</td>
+                    <td>${p.qty}</td>
+                    <td>${p.rating}</td>
+                    <td>$${p.price}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            document.getElementById('product_table').style.display = 'table';
+        });
+}
+
+document.addEventListener('DOMContentLoaded', refreshDropdowns);
+</script>
+</body>
+</html>
