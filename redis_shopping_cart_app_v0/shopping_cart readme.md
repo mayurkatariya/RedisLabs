@@ -47,6 +47,10 @@ cd redis-cart-app
 ### 2. Create and Activate a Virtual Environment
 
 ```bash
+sudo apt update
+sudo apt install python3
+sudo apt install python-pip3
+sudo apt install python3-venv
 python3 -m venv .venv
 source .venv/bin/activate        # On Windows: .venv\Scripts\activate
 ```
