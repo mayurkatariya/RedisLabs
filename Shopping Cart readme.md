@@ -30,7 +30,7 @@ RedisLabs/redis_shopping_cart_app_v0/
 │   └── .env                 # Redis connection config
 │
 ├── requirements.txt         # Python dependencies
-└── Shopping Cart README.md                # Shopping Cart Project guide  
+└── shopping_cart README.md  # Shopping Cart Project guide  
 ```
 
 ---
