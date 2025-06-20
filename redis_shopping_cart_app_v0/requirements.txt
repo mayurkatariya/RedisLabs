@@ -1,3 +1,5 @@
+## To install FLASK, REDIS, DOTENV
+
 Flask
 redis
 python-dotenv
