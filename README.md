@@ -26,7 +26,8 @@ Explore Redis by installing, configuring, and leveraging its features to build a
   - Install a Redis database and configure it as a replica of your CE instance for redundancy and failover.
 
 4. **Database Replication Script**
-  - To prove replication is working, Create a script to insert 100 digits and random numbers on CE and print them in Reverse Order from CE 
+  - To prove replication is working, create a script to insert 100 digits and random numbers on CE and print them in Reverse Order from CE.
+  - This script is created under VMrecplication Script Folder
 
 
 6. **Build a Basic Shopping Cart Application**
@@ -38,7 +39,7 @@ Explore Redis by installing, configuring, and leveraging its features to build a
      - The cart supports multiple quantities of each item.
      - Each cart is associated with a user.
 
----
+--- This script is created under redis_shopping_cart_app_v0 folder. It has a seperate readme file with additional details
 
 ## 🛒 Example Data Model
 
@@ -54,4 +55,5 @@ Cart:UserId:{sku, qty}
 ## 💡 Tips
 - Ensure data consistency between CE and Enterprise editions.
 - Explore Redis modules for enhanced functionality.
+- There is a separate readme file under both the folders on how to run the scripts and the application
 
