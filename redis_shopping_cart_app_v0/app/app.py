@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 r = redis.Redis(
     host=os.getenv("REDIS_HOST", "localhost"),
-    port=int(os.getenv("REDIS_PORT", 12000)),
+    port=int(os.getenv("REDIS_PORT", 10001)),
     password=os.getenv("REDIS_PASSWORD", ""),
     decode_responses=True,
     ssl=os.getenv("REDIS_USE_SSL", "false").lower() == "true"
