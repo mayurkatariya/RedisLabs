@@ -43,9 +43,9 @@ Explore Redis by installing, configuring, and leveraging its features to build a
 ## 🛒 Example Data Model
 
 ```plaintext
-User: user:123
-Products:{SKU, Price, Description, Qty, Rating}  └──
-Cart: cart:123
+User: {userid, name, email} 
+Products:{sku, name, description, qty, rating, price}
+Cart:UserId:{sku, qty}
 
 ```
 
