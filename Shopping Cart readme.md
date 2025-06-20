@@ -20,7 +20,8 @@ A full-stack shopping cart application built with **Flask**, **Redis**, **Bootst
 ## 📁 Project Structure
 
 ```
-redis-cart-app/
+
+RedisLabs/redis_shopping_cart_app_v0/
 │
 ├── app/
 │   ├── app.py               # Flask backend
@@ -39,7 +40,7 @@ redis-cart-app/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/redis-cart-app.git
+git clone https://github.com/mayurkatarya/redis-cart-app.git
 cd redis-cart-app
 ```
 
@@ -53,7 +54,7 @@ source .venv/bin/activate        # On Windows: .venv\Scripts\activate
 ### 3. Install Required Packages
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ### 4. Configure Redis Connection
