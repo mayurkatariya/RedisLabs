@@ -37,19 +37,23 @@ RedisLabs/redis_shopping_cart_app_v0/
 
 ## 🛠️ Setup Instructions
 
+### 00 Install Python & PIP Packages 
+```bash
+sudo apt update
+sudo apt install python3
+sudo apt install python-pip3
+``` 
+
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/mayurkatarya/redis-cart-app.git
-cd redis-cart-app
+cd RedisLabs/redis_shopping_cart_app_v0/
 ```
 
 ### 2. Create and Activate a Virtual Environment
 
 ```bash
-sudo apt update
-sudo apt install python3
-sudo apt install python-pip3
 sudo apt install python3-venv
 python3 -m venv .venv
 source .venv/bin/activate        # On Windows: .venv\Scripts\activate
