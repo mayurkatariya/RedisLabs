@@ -1,6 +1,7 @@
 # 🚀 RedisLabs
 
-Welcome to **RedisLabs**! This repository documents key learnings and objectives for working with Redis, including setup, data modeling, and application development.
+Welcome to **RedisLabs**! 
+This repository documents key learnings and objectives for working with Redis, including setup, replication setup, data modeling, and application development.
 
 ---
 
@@ -43,17 +44,14 @@ Explore Redis by installing, configuring, and leveraging its features to build a
 
 ```plaintext
 User: user:123
-  └── Cart: cart:123
-      ├── item:sku_001 → 2
-      ├── item:sku_002 → 1
-      └── item:sku_005 → 4
+Products:{SKU, Price, Description, Qty, Rating}  └──
+Cart: cart:123
+
 ```
 
 ---
 
 ## 💡 Tips
-
-- Use Redis hashes or sorted sets for efficient cart management.
 - Ensure data consistency between CE and Enterprise editions.
 - Explore Redis modules for enhanced functionality.
 
