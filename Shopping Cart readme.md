@@ -30,7 +30,7 @@ RedisLabs/redis_shopping_cart_app_v0/
 │   └── .env                 # Redis connection config
 │
 ├── requirements.txt         # Python dependencies
-└── README.md                # Project guide
+└── Shopping Cart README.md                # Shopping Cart Project guide  
 ```
 
 ---
@@ -126,7 +126,7 @@ pip install flask redis python-dotenv
 ## 🧠 Redis Data Structure Notes
 
 - `user:{user_id}` → Hash (name, email)  
-- `product:{sku}` → Hash (name, desription, qty, rating, price)  
+- `product:{sku}` → Hash (name, description, qty, rating, price)  
 - `cart:{user_id}` → Hash (sku → quantity)
 
 ---
