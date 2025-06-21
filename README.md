@@ -20,13 +20,13 @@ Explore Redis by installing, configuring, and leveraging its features to build a
   - Use [Memtier](https://github.com/RedisLabs/memtier_benchmark) to benchmark and populate your Redis instance.
 
 3. **Deploy Redis Enterprise Edition**
-  - Create a Redis Enterprise cluster for advanced features and high availability.
+  - Create a Redis Enterprise cluster 
 
 4. **Database Replication**
   - Install a Redis database and configure it as a replica of your CE instance for redundancy and failover.
 
 4. **Database Replication Script**
-  - To prove replication is working, create a script to insert 100 digits and random numbers on CE and print them in Reverse Order from CE.
+  - To prove replication is working, create a script to insert 100 digits and random numbers on CE and print them in Reverse Order from EE.
   - This script is created under VMrecplication Script Folder
 
 
