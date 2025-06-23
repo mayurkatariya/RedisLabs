@@ -58,8 +58,12 @@ print()
 print(f"✅ Inserted 100 random values into key: CE_REDIS key {rand_list}")
 
 # Retrieve values from Redis EE
-int_values_reversed = [r_ee.lpop(num_list) for _ in range(100)] # LPOP because we need reverse order of the list i.e Stack Functionality LIFO
-rand_values_reversed = [r_ee.lpop(rand_list) for _ in range(100)]
+#int_values_reversed = [r_ee.lpop(num_list) for _ in range(100)] # LPOP because we need reverse order of the list i.e Stack Functionality LIFO
+#rand_values_reversed = [r_ee.lpop(rand_list) for _ in range(100)]
+
+# Retrieve values from Redis EE without destroying the list
+int_values_reversed = r_ee.lrange(num_list, 0, 99)  # Get first 100 elements (leftmost, i.e., most recently pushed)
+rand_values_reversed = r_ee.lrange(rand_list, 0, 99)
 
 print("🔁🔁 Revered Integers: PRINTING FROM EE", [int(x) for x in int_values_reversed]) 
 print("🔁🔁 Reversed Randoms: PRINTING FROM EE", [int(x) for x in rand_values_reversed])
